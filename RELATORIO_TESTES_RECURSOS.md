@@ -5,8 +5,8 @@
 
 ## 🎯 Sumário dos Resultados
 
-* **Total de Casos de Teste Executados:** 9
-* **Total de Testes Aprovados (PASS):** 10
+* **Total de Casos de Teste Executados:** 8
+* **Total de Testes Aprovados (PASS):** 8
 * **Total de Testes Reprovados (FAIL):** 0
 
 ---
