@@ -15,19 +15,19 @@
 
 | ID | Cenário de Teste | Status | Observações |
 | :---: | :--- | :---: | :--- |
-| T1.1 | Buscar termo válido | Validado | [Observações] |
-| T1.2 | Buscar termo inválido | Validado | [Observações] |
-| T1.3 | Aplicar filtro de Etapa de Ensino | Validado | [Observações] |
-| T1.4 | Aplicar filtros múltiplos | Validado | [Observações] |
-| T1.5 | Limpar Filtros | Validado | [Observações] |
+| T1.1 | Buscar termo válido | Validado | [] |
+| T1.2 | Buscar termo inválido | Validado | [] |
+| T1.3 | Aplicar filtro de Etapa de Ensino | Validado | [] |
+| T1.4 | Aplicar filtros múltiplos | Validado | [] |
+| T1.5 | Limpar Filtros | Validado | [] |
 
 ## 2. Testes de Visualização (UI/UX)
 
 | ID | Cenário de Teste | Status | Observações |
 | :---: | :--- | :---: | :--- |
-| T3.1 | Abrir recurso de Áudio/Vídeo | Validado | [Observações] |
-| T3.2 | Paginação/Scroll Infinito | Validado | [Observações] |
-| T4.1 | Responsividade (Mobile View) | Validado | [Observações] |
+| T3.1 | Abrir recurso de Áudio/Vídeo | Validado | [] |
+| T3.2 | Paginação/Scroll Infinito | Validado | [] |
+| T4.1 | Responsividade (Mobile View) | Validado | [] |
 
 ---
 
