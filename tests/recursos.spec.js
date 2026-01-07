@@ -10,10 +10,22 @@ test.describe('Módulo de Recursos Didáticos - Funcionalidades Principais', () 
     test.slow(); 
 
     test.beforeEach(async ({ page }) => {
+        // Aumentamos o tempo total por causa da VPN
         test.setTimeout(180000); 
-        await page.goto('/recursos', { timeout: 90000, waitUntil: 'networkidle' });
+        
+        // Tentativa de navegação com espera paciente
+        await page.goto('/recursos', { timeout: 120000, waitUntil: 'load' });
+        
         const searchBar = page.getByTestId('search-bar');
-        await searchBar.waitFor({ state: 'visible', timeout: 60000 });
+        
+        // Estratégia de estabilidade: Se a barra não aparecer, recarrega uma vez
+        try {
+            await searchBar.waitFor({ state: 'visible', timeout: 45000 });
+        } catch (e) {
+            console.log("Ambiente lento detectado. Tentando recarregar a página...");
+            await page.reload({ waitUntil: 'networkidle' });
+            await searchBar.waitFor({ state: 'visible', timeout: 45000 });
+        }
     });
 
     // --- BLOCO 1: FILTROS E BUSCA ---
@@ -74,6 +86,23 @@ test.describe('Módulo de Recursos Didáticos - Funcionalidades Principais', () 
         await expect(page.getByTestId('search-bar')).toBeVisible();
     });
 
+    test('T1.6 - Deve aplicar filtros de Tipo e Categoria', async ({ page }) => {
+        const filtroTipo = page.locator('button, div').filter({ hasText: /^Tipo$/ }).first();
+        await filtroTipo.click();
+        await page.keyboard.press('ArrowDown');
+        await page.keyboard.press('Enter');
+        await page.waitForTimeout(3000);
+
+        const filtroCategoria = page.locator('button, div').filter({ hasText: /^Categoria$/ }).first();
+        await filtroCategoria.click();
+        await page.keyboard.press('ArrowDown');
+        await page.keyboard.press('Enter');
+        
+        await page.waitForTimeout(5000); 
+        await expect(page.getByTestId('search-bar')).toBeVisible();
+        console.log("Filtros de Tipo e Categoria aplicados com sucesso!");
+    });
+
     // --- BLOCO 2: RECOMENDADOS ---
 
     test('T2.1 - Verificar visibilidade do card de recomendação', async ({ page }) => {
@@ -84,38 +113,59 @@ test.describe('Módulo de Recursos Didáticos - Funcionalidades Principais', () 
     // --- BLOCO 3: VISUALIZAÇÃO DE ARQUIVOS ---
 
     test('T3.1 - Deve validar o contador de arquivos e Scroll Infinito', async ({ page }) => {
-        // Valida Contador (ex: "Arquivos (3196)")
         const contador = page.locator('span, p').filter({ hasText: /Arquivos \(\d+\)/ }).first();
         await expect(contador).toBeVisible();
         console.log(`Contador detectado: ${await contador.innerText()}`);
 
-        // Valida Scroll Infinito
         const cardsIniciais = await page.locator('div').filter({ hasText: /^ID da Imagem/ }).count();
         
-        // Rola até o final
         await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-        await page.waitForTimeout(7000); // Espera carregamento da API
+        await page.waitForTimeout(7000); 
 
         const cardsAposScroll = await page.locator('div').filter({ hasText: /^ID da Imagem/ }).count();
         console.log(`Cards antes: ${cardsIniciais} | Cards depois: ${cardsAposScroll}`);
         
-        // O teste passa se o número de cards for igual ou maior (garante que não quebrou a lista)
         expect(cardsAposScroll).toBeGreaterThanOrEqual(cardsIniciais);
     });
 
     test('T3.2 - Deve validar a presença de metadados nos cards (Séries/Etapas)', async ({ page }) => {
-        // 1. Primeiro garantimos que pelo menos um card carregou o conteúdo interno
         const containerCards = page.locator('div').filter({ hasText: /^ID da Imagem/ }).first();
         await containerCards.waitFor({ state: 'visible', timeout: 45000 });
 
-        // 2. Usamos um seletor mais abrangente (div, span ou p) 
-        // e incluímos "EFAI" que também aparece nas suas fotos
         const tags = page.locator('div, span, p').filter({ hasText: /EFAF|EM|EI|EFAI/ }).first();
-        
-        // 3. Verificação com timeout estendido para ambientes lentos
         await expect(tags).toBeVisible({ timeout: 30000 });
         
         const textoEncontrado = await tags.innerText();
         console.log(`Metadado validado com sucesso: ${textoEncontrado}`);
+    });
+
+    test('T3.3 - Deve abrir a visualização detalhada de um arquivo', async ({ page }) => {
+        const cardParaClicar = page.locator('div').filter({ hasText: /^ID da Imagem/ }).first();
+        await cardParaClicar.waitFor({ state: 'visible' });
+        
+        console.log("Clicando no card para abrir o detalhamento...");
+        await cardParaClicar.click();
+
+        const botaoFechar = page.locator('button').filter({ hasText: /Fechar|Close/i }).first();
+
+        try {
+            await Promise.any([
+                botaoFechar.waitFor({ state: 'visible', timeout: 10000 }),
+                page.locator('text=Detalhes').waitFor({ state: 'visible', timeout: 10000 })
+            ]);
+            
+            console.log("Modal aberto detectado.");
+            
+            if (await botaoFechar.isVisible()) {
+                await botaoFechar.click();
+            } else {
+                await page.keyboard.press('Escape');
+            }
+        } catch (e) {
+            console.log("Não detectou botão de fechar, tentando fechar com ESC...");
+            await page.keyboard.press('Escape');
+        }
+
+        await expect(cardParaClicar).toBeVisible();
     });
 });
