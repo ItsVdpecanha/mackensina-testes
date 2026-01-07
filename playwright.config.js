@@ -11,10 +11,10 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
 
-  // Aumentei para 90s para dar fôlego à VPN
+  // 90 segundos para VPN
   timeout: 90 * 1000, 
   expect: {
-    timeout: 10000, // Aumentado para 10s para ser mais tolerante
+    timeout: 10000, // 10 segundos
   },
 
   projects: [
@@ -27,7 +27,7 @@ export default defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         storageState: STORAGE_STATE,
-        // FORÇA A CAPTURA DE SCREENSHOT EM QUALQUER FALHA
+        // FORÇA A CAPTURA DE SCREENSHOT EM QUALQUER FALHA (saber o que houve)
         screenshot: 'on', 
         trace: 'retain-on-failure',
       },
@@ -42,7 +42,7 @@ export default defineConfig({
     
     // Configurações globais de captura
     screenshot: 'on', 
-    trace: 'on', // Ativa o trace para vermos o passo a passo depois
+    trace: 'on', // Ativa o trace para ver o passo a passo depois
     
     launchOptions: {
       args: [
