@@ -5,8 +5,8 @@
 
 ## 🎯 Sumário dos Resultados
 
-* **Total de Casos de Teste Executados:** 8
-* **Total de Testes Aprovados (PASS):** 8
+* **Total de Casos de Teste Executados:** 10
+* **Total de Testes Aprovados (PASS):** 10
 * **Total de Testes Reprovados (FAIL):** 0
 
 ---
@@ -20,7 +20,7 @@
 | T1.3 | Aplicar filtro de Etapa de Ensino | Validado | [] |
 | T1.4 | Aplicar filtros múltiplos | Validado | [] |
 | T1.5 | Limpar Filtros | Validado | [] |
-| T1.6 | Filtro tipo e categoria | [] |
+| T1.6 | Filtro tipo e categoria | Validado | | [] |
 
 ## 2. Testes de Visualização (UI/UX)
 
