@@ -20,6 +20,7 @@
 | T1.3 | Aplicar filtro de Etapa de Ensino | Validado | [] |
 | T1.4 | Aplicar filtros múltiplos | Validado | [] |
 | T1.5 | Limpar Filtros | Validado | [] |
+| T1.6 | Filtro tipo e categoria | [] |
 
 ## 2. Testes de Visualização (UI/UX)
 
@@ -27,7 +28,9 @@
 | :---: | :--- | :---: | :--- |
 | T3.1 | Abrir recurso de Áudio/Vídeo | Validado | [] |
 | T3.2 | Paginação/Scroll Infinito | Validado | [] |
+| T3.3 | Visualização detalhada | Validado | []
 | T4.1 | Responsividade (Mobile View) | Validado | [] |
+
 
 ---
 
