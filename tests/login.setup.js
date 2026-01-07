@@ -10,17 +10,16 @@ setup('autenticar', async ({ page }) => {
 
     await page.goto('https://mackensina.develop.sme.aws.mackenzie.cloud/login');
 
-    // Passo 1: Email
+    // 1. Email
     await page.getByTestId('input').fill(username);
     await page.getByTestId('button-login-step1').click();
 
-    // Passo 2: Senha
+    // 2. Senha
     await page.waitForLoadState('networkidle'); 
     await page.locator('#i0118').fill(password);
     await page.locator('#i0118').press('Enter'); 
 
-    // Passo 3: Botão "Não" (Continuar conectado)
-    // Esperamos um pouco para a tela da Microsoft carregar o botão
+    // 3. Selecionar "não" (continuar conectado)
     await page.waitForTimeout(8000); 
     
     await page.evaluate(() => {
@@ -33,8 +32,6 @@ setup('autenticar', async ({ page }) => {
         if (btnNao) btnNao.click();
     });
 
-    // PASSO FINAL: Não esperamos a URL. Esperamos 10 segundos para a VPN processar os cookies
-    // e salvamos o estado imediatamente, mesmo que a tela esteja branca.
     console.log('Aguardando processamento de cookies via VPN...');
     await page.waitForTimeout(10000); 
 
