@@ -22,15 +22,15 @@ test.describe('Módulo de Detalhes - Validação de Conteúdo', () => {
         await cardTarget.waitFor({ state: 'visible', timeout: 30000 });
         console.log('Card de imagem encontrado. Clicando...');
 
-        // Clicamos no card e preparamos para uma possível nova aba ou navegação
+        // Clique no card e prepara para uma possível nova aba ou navegação
         await cardTarget.click();
 
-        // Esperamos a transição. Se a URL mudar para algo com ID, sucesso!
+        // Espera a transição. Se a URL mudar para algo com ID, sucesso!
         await page.waitForTimeout(5000); 
         const urlAtual = page.url();
         console.log(`URL após clique: ${urlAtual}`);
 
-        // Validação: Se saímos da lista principal, o teste passou
+        // Validação: Se sair da lista principal, o teste passou
         expect(urlAtual).not.toContain('/recursos?'); 
         
         // Verifica se algum elemento de conteúdo de detalhes apareceu
